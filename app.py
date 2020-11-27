@@ -130,7 +130,8 @@ def index():
     result3 = str(figdata_png)[2:-1]
 
     ## Buatlah sebuah plot yang menampilkan insight di dalam data 
-    cat_price = df2.groupby(by= 'Category').agg({'Price' : 'mean'}).rename({'Price':'Total'}, axis=1).sort_values(by='Total', ascending= False).head()
+    price_cond = df2['Price'] != 0
+    cat_price = df2[price_cond].groupby(by= 'Category').agg({'Price' : 'mean'}).rename({'Price':'Total'}, axis=1).sort_values(by='Total', ascending= False).head()
     X2 = cat_price.reset_index()['Category']
     Y2 = cat_price.reset_index()['Total']
     colors = 'rgbkymc'
@@ -139,7 +140,7 @@ def index():
     fig.add_subplot()
     plt.bar(X2,Y2, color=colors)
     plt.xlabel('Category')
-    plt.ylabel('Average Price')
+    plt.ylabel('Average Paid Apps Price')
     plt.savefig('cat_price.png',bbox_inches="tight") 
 
     figfile = BytesIO()
